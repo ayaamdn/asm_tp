@@ -23,7 +23,7 @@ _start:
     jne     fail
 
     mov al, byte [buffer+2]
-    cmp al, '0xA'
+    cmp al, 0xA
     je success
     jmp fail
 
