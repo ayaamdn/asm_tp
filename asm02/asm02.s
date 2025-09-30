@@ -22,15 +22,18 @@ _start:
     cmp     al, '2'
     jne     fail
 
+    mov al, bute [buffer+2]
+    cmp al, '0xA'
+    je success
+    jmp fail
+
+success:
     mov rax, 1
     mov rdi, 1
     mov rsi, num
     mov rdx, 5
     syscall
 
-    jmp success
-
-success:
     mov rax, 60
     xor rdi, rdi
     syscall
