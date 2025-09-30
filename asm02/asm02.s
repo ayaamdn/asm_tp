@@ -16,11 +16,11 @@ _start:
 
     mov     al, byte [buffer]
     cmp     al, '4'
-    jne     exit
+    jne     fail
 
     mov     al, byte [buffer+1]
     cmp     al, '2'
-    jne     exit
+    jne     fail
 
     mov rax, 1
     mov rdi, 1
@@ -28,7 +28,14 @@ _start:
     mov rdx, 5
     syscall
 
-exit:
+    jmp success
+
+success:
     mov rax, 60
     xor rdi, rdi
+    syscall
+
+fail: 
+    mov rax, 60
+    mov rdi, 1
     syscall
