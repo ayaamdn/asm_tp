@@ -8,27 +8,38 @@ section .text
     global _start
 
 _start:
-    mov rax, 0
-    mov rdi, 0
-    mov rsi, buffer
-    mov rdx, 4
-    syscall
+    mov rbx, [rsp] ;argc
+    cmp rbx, 2
+    jl fail
 
-    mov     al, byte [buffer]
+    mov rsi, [rsp+16] ;argv[1]
+
+    mov     al, byte [rsi]
     cmp     al, '4'
-    jne     exit
+    jne     fail
 
-    mov     al, byte [buffer+1]
+    mov     al, byte [rsi+1]
     cmp     al, '2'
-    jne     exit
+    jne     fail
 
+    mov al, byte [rsi+2]
+    cmp al, 0
+    jne fail
+
+    jmp success
+
+success:
     mov rax, 1
     mov rdi, 1
     mov rsi, num
     mov rdx, 5
     syscall
 
-exit:
     mov rax, 60
     xor rdi, rdi
+    syscall
+
+fail: 
+    mov rax, 60
+    mov rdi, 1
     syscall
