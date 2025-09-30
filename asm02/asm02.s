@@ -22,7 +22,7 @@ _start:
     cmp     al, '2'
     jne     fail
 
-    mov al, bute [buffer+2]
+    mov al, byte [buffer+2]
     cmp al, '0xA'
     je success
     jmp fail
