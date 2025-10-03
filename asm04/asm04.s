@@ -13,6 +13,15 @@ _start:
 
     xor rbx, rbx ; rbx stores buffer content
     xor rcx, rcx
+    xor r8, r8   ; r8 = negative flag
+
+    mov al, byte [buffer + rcx]
+    cmp al, '-'
+    jne parse_start
+    inc rcx
+    mov r8, 1
+
+parse_start:
 
 convert_loop:
     mov al, byte [buffer + rcx]
@@ -28,11 +37,17 @@ convert_loop:
 
     sub al, '0' ; convert ascii to digit
     imul rbx, rbx, 10
+    jo fail
     add rbx, rax
+    jo fail
     inc rcx
     jmp convert_loop
 
 check_even_odd:
+    cmp r8, 0
+    je sign_done
+    neg rbx
+sign_done:
     mov rax, rbx
     and rax, 1 ; keep lowest bit
     jz number_even ; lsb flag
