@@ -21,6 +21,11 @@ convert_loop:
     cmp al, 0 ; '0' => end of string
     je check_even_odd
 
+    cmp al, '0'
+    jl fail
+    cmp al, '9'
+    jg fail
+
     sub al, '0' ; convert ascii to digit
     imul rbx, rbx, 10
     add rbx, rax
@@ -40,6 +45,11 @@ number_odd:
 number_even:
     mov rax, 60
     xor rdi, rdi
+    syscall
+
+fail: 
+    mov rax, 60
+    mov rdi, 2
     syscall
 
 ; a number is even if last binary bit = 0
